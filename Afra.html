@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Poppins,sans-serif;background:#f8e8ee;color:#444;overflow-x:hidden}
+.hero{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(#ffeef3,#fce4ec)}
+.card{background:#fff;padding:30px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,.1);max-width:90%}
+h1,h2{font-family:'Patrick Hand',cursive}
+.btn{padding:12px 22px;border:none;border-radius:30px;background:#ff8fab;color:#fff;font-size:16px;cursor:pointer}
+.timeline{padding:40px 20px;display:grid;gap:30px;max-width:1000px;margin:auto}
+.polaroid{background:white;padding:15px;box-shadow:0 5px 15px rgba(0,0,0,.15);transform:rotate(calc(-3deg + 6deg * var(--r)));border-radius:8px}
+.polaroid img{width:100%;height:500px;object-fit:cover;background:#ddd}
+.caption{text-align:center;font-family:'Patrick Hand',cursive;font-size:1.2rem}
+.final{padding:80px 20px;text-align:center}
+#noBtn{position:relative}
+.music{position:fixed;top:15px;right:15px}
+</style>
+</head>
+<body>
+<audio id="bgMusic" loop>
+<source src="Audio.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music">
+<button class="btn" onclick="toggleMusic()">🎵 Music</button>
+</div>
+
+<section class="hero">
+<div class="card">
+<h1>My pretty little Princess ❤️</h1>
+<p>I made something special for you :)</p>
+<p>Don't forget to press the music button</p>
+<button class="btn" onclick="document.getElementById('timeline').scrollIntoView({behavior:'smooth'})">Open</button>
+</div>
+</section>
+
+<section id="timeline" class="timeline"></section>
+
+<section class="final">
+<h2>Im really sorry I broke things off</h2>
+<h1>Can we please get back together?</h1>
+<button class="btn" onclick="yesClicked()">Yes ❤️</button>
+<button class="btn" id="noBtn">No 😭</button>
+<p id="response"></p>
+</section>
+
+<script>
+const memories = [
+["1.png","The night that started it all","Id never ever forget lying next to you"],
+["2.jpg","The first time we went out just the both of us","The hill"],
+["3.jpg","IKEA day","We checked the bed out and I pushed you around in the carts and then we went to California Burito"],
+["4.png","March 20","I really liked how we matched on your birthday blue is lowkey our colour"],
+["5.jpg","A photo of us at my place","I'll always remember the plank sotry we made that was so cute"],
+["6.jpg","Malleshwaram day out","I'll never forget this day you spoke to me about marriage and how you had that conversation with your mum"]
+];
+
+const container=document.getElementById("timeline");
+let sideBySeWrapper = null;
+memories.forEach((m,i)=>{
+let sizeStyle = "";
+if(i === 1) sizeStyle = "width: 120%; display: flex; align-items: center; justify-content: center;"; // 2nd photo fit perfectly
+if(i === 2 || i === 3) sizeStyle = "width: 60%; display: inline-block;"; // 3rd & 4th photo portrait side by side
+
+// Create wrapper for 3rd photo
+if(i === 2) {
+  sideBySeWrapper = document.createElement('div');
+  sideBySeWrapper.style.display = 'flex';
+  sideBySeWrapper.style.gap = '20px';
+  sideBySeWrapper.style.justifyContent = 'center';
+}
+
+let photoHtml = `
+<div class="polaroid" style="--r:${Math.random()}; ${sizeStyle}">
+<img src="${m[0]}" alt="memory ${i+1}" onerror="this.src='https://placehold.co/600x400?text=Add+Photo+${i+1}'" style="${(i === 2 || i === 3) ? 'height:700px;' : ''}">
+<div class="caption">
+<h2>${m[1]}</h2>
+<p>${m[2]}</p>
+</div>
+</div>`;
+
+if(i === 2) {
+  sideBySeWrapper.innerHTML += photoHtml;
+} else if(i === 3) {
+  sideBySeWrapper.innerHTML += photoHtml;
+  container.appendChild(sideBySeWrapper);
+} else {
+  container.innerHTML += photoHtml;
+}
+});
+
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+noBtn.style.position='fixed';
+noBtn.style.left=Math.random()*(window.innerWidth-100)+'px';
+noBtn.style.top=Math.random()*(window.innerHeight-60)+'px';
+});
+
+function yesClicked(){
+document.getElementById("response").innerHTML =
+"I will make sure you never regret this. Till happily ever after ❤️";
+}
+
+function toggleMusic(){
+const audio=document.getElementById("bgMusic");
+if(audio.paused){
+  audio.play().catch(e => console.error("Music play error:", e));
+} else {
+  audio.pause();
+}
+}
+</script>
+</body>
+</html>
